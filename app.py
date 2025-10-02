@@ -110,8 +110,8 @@ async def get_player_by_id(player_id: str):
         }
     }
 
-@app.put("/player/{player_id}")
-async def update_player(player_id: str):
+@app.post("/player/{player_id}")
+async def add_player(player_id: str):
     players_df = await file_service.get_players_df()
     player = players_df[players_df['identifier'] == player_id]
 
@@ -121,7 +121,7 @@ async def update_player(player_id: str):
     cricinfo_keys = file_service._get_cricinfo_keys(player.iloc[0])
 
     for cricinfo_key in cricinfo_keys:
-        data = await scraper_service.scrape_player_data(player_id, cricinfo_key)
+        data = await scraper_service.scrape_player_data(cricinfo_key, player_id)
         if data:
             break
 
