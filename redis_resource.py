@@ -1,14 +1,12 @@
 import json
-import os
+import config
 
-from dotenv import load_dotenv
 from upstash_redis import Redis
 
-load_dotenv()
 
 redis = Redis(
-    url=os.getenv("REDIS_URL"),
-    token=os.getenv("REDIS_TOKEN")
+    url=config.REDIS_URL,
+    token=config.REDIS_TOKEN
 )
 
 def set_redis(key, value):
