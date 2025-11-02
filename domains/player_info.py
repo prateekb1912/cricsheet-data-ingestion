@@ -1,6 +1,6 @@
 from typing import Optional
 from pydantic import BaseModel, Field
-from sqlalchemy import Column, String, DateTime, Boolean, ARRAY
+from sqlalchemy import Column, Date, String, Boolean, ARRAY
 
 from domains.base import Base
 
@@ -10,7 +10,7 @@ class PlayerInfo(Base):
 
     player_id = Column(String, primary_key=True)
     name = Column(String, nullable=False)
-    dob = Column(DateTime, nullable=True)
+    dob = Column(Date, nullable=True)
     birth_place = Column(String, nullable=True)
     gender = Column(String, nullable=True)
     batting_styles = Column(ARRAY(String), nullable=True)

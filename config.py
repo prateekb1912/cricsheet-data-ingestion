@@ -12,6 +12,7 @@ DB_PORT = os.getenv('POSTGRES_PORT', 5432)
 
 REDIS_URL = os.getenv('REDIS_URL')
 REDIS_TOKEN = os.getenv('REDIS_TOKEN')
+REDIS_PORT = os.getenv('REDIS_PORT', '6379')
 
 OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
-OPENAI_MODEL = os.getenv('OPENAI_MODEL', 'gpt-4o-mini')
+OPENAI_MODEL = os.getenv('OPENAI_MODEL', 'gpt-4o')

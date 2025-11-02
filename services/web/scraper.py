@@ -89,7 +89,7 @@ class ScraperService:
                 {html}
             """
 
-            completion = self.openai_client.beta.chat.completions.parse(
+            completion = self.openai_client.chat.completions.create(
                 model=self.openai_model,
                 messages=[
                     {"role": "system", "content": "You are a cricket information extraction expert. Extract structured data from HTML."},

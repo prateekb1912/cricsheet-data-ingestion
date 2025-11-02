@@ -3,7 +3,8 @@ import asyncio
 from typing import List, Optional
 import requests
 import pandas as pd
-from datetime import datetime
+
+from services.queue.tasks import scrape_player_task
 from .zip_processor import ZipProcessor
 
 from services.web.scraper import ScraperService
@@ -73,9 +74,11 @@ class FileService:
 
                             if keys_cricinfo:
                                 for key in keys_cricinfo:
-                                    player_data = await self.scraper_service.scrape_player_data(identifier, key)
-                                    if player_data:
-                                        return await self.db_manager.add_player(identifier, player_data)
+                                    print(key, identifier)
+                                    result = scrape_player_task.delay(key, identifier)
+                                    print(result)
+                                    if result:
+                                        return await self.db_manager.add_player(identifier, result.get('data'))
                             else:
                                 print(f"No key_cricinfo for player {identifier}")
                                 return False

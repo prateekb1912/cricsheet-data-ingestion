@@ -3,9 +3,12 @@ from fastapi import FastAPI, Request, HTTPException
 
 from services.db.manager import DatabaseService
 from services.file.manager import FileService
-from services.web.scraper import ScraperService
+from services.queue.tasks import scrape_player_task
 
 import config
+import logging
+
+logger = logging.getLogger(__name__)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -22,7 +25,6 @@ db_service = DatabaseService(
     port=config.DB_PORT
 )
 file_service = FileService(db_service)
-scraper_service = ScraperService(db_service)
 
 @app.get("/")
 async def root():
@@ -120,10 +122,22 @@ async def add_player(player_id: str):
 
     cricinfo_keys = file_service._get_cricinfo_keys(player.iloc[0])
 
+    data = None
     for cricinfo_key in cricinfo_keys:
-        data = await scraper_service.scrape_player_data(cricinfo_key, player_id)
-        if data:
-            break
+        result = scrape_player_task.delay(cricinfo_key, player_id)
+        logger.info(f"Task result: {result}")
+        try:
+            task_result = result.get(timeout=30)
+            logger.info(f"Task result: {task_result}")
+            if task_result and task_result.get('data'):
+                data = task_result.get('data')
+                break
+        except Exception as e:
+            print(f"Error waiting for task result: {e}")
+            continue
+
+    if not data:
+        raise HTTPException(status_code=500, detail="Failed to scrape player data")
 
     return {
         "status": "ok",

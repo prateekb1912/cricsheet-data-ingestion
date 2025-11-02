@@ -9,6 +9,8 @@ redis = Redis(
     token=config.REDIS_TOKEN
 )
 
+connection_link = f"rediss://default:{config.REDIS_TOKEN}@{config.REDIS_URL}:{config.REDIS_PORT}?ssl_cert_reqs=required"
+
 def set_redis(key, value):
     redis.setex(key, 60*60, value)
 
