@@ -2,7 +2,7 @@ from sqlalchemy import Column, Integer, DateTime
 from sqlalchemy.dialects.postgresql import JSONB
 from datetime import datetime, timezone
 
-from domains.base import Base
+from app.models.base import Base
 
 class RawMatch(Base):
     __tablename__ = 'raw_matches'
@@ -39,3 +39,4 @@ class RawMatch(Base):
 
     def __repr__(self):
         return f'<RawMatch(match_id={self.match_id}, created_at={self.created_at})>'
+

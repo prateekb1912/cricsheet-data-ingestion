@@ -4,10 +4,9 @@ from typing import List, Optional
 import requests
 import pandas as pd
 
-from services.queue.tasks import scrape_player_task
-from .zip_processor import ZipProcessor
-
-from services.web.scraper import ScraperService
+from app.tasks.player_tasks import scrape_player_task
+from app.services.zip_processor import ZipProcessor
+from app.services.scraper_service import ScraperService
 
 class FileService:
     def __init__(self, db_manager):
@@ -74,9 +73,7 @@ class FileService:
 
                             if keys_cricinfo:
                                 for key in keys_cricinfo:
-                                    print(key, identifier)
                                     result = scrape_player_task.delay(key, identifier)
-                                    print(result)
                                     if result:
                                         return await self.db_manager.add_player(identifier, result.get('data'))
                             else:
@@ -109,3 +106,4 @@ class FileService:
         except Exception as e:
             print(f"Error processing players: {e}")
             return None
+

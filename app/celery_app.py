@@ -1,5 +1,5 @@
 from celery import Celery
-from redis_resource import connection_link
+from app.utils.redis_client import connection_link
 
 app = Celery(
     'cricbit',
@@ -18,5 +18,6 @@ app.conf.update(
     task_soft_time_limit=240,
     worker_prefetch_multiplier=1,
     worker_max_tasks_per_child=100,
-    imports=('services.queue.tasks',),
+    imports=('app.tasks.player_tasks',),
 )
+
