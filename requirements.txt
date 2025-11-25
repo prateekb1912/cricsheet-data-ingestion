@@ -9,8 +9,3 @@ asyncpg==0.29.0
 upstash-redis==1.2.0
 qstash==2.0.0
 pandas==2.1.4
-openai==1.56.0
-pydantic==2.10.3
-celery==5.5.3
-redis==7.0.1
-flower==2.0.1

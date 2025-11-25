@@ -6,9 +6,9 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import sessionmaker
 
-from app.models.base import Base
-from app.models.raw_matches import RawMatch
-from app.models.player_info import PlayerInfo
+from domains.base import Base
+from domains.raw_matches import RawMatch
+from domains.player_info import PlayerInfo
 
 class DatabaseService:
     _instance = None
@@ -119,4 +119,3 @@ class DatabaseService:
             except Exception as e:
                 print(f"Error adding player {player_id}: {e}")
                 return False
-

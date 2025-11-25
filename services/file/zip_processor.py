@@ -40,4 +40,3 @@ class ZipProcessor:
             processed_ids.extend([mid for mid, success in zip(batch, results) if success])
 
         return processed_ids
-
